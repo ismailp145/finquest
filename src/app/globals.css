@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.input-field {
+  @apply inline-block h-8 rounded-md bg-white/20 text-white px-3 py-1.5 placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-200;
+}
+.select-field {
+  @apply inline-block rounded-md h-8 bg-white/20 text-black px-3 py-1.5 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all duration-200;
+}
