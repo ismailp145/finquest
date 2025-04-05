@@ -13,36 +13,35 @@ export default function Home() {
   const [major, setMajor] = useState("");
   const [isStudent, setIsStudent] = useState(false);
   const [hobbies, setHobbies] = useState("");
+
   return (
-    <div className="grid grid-rows-[auto_1fr_auto] min-h-screen bg-[#202020] text-white font-[family-name:var(--font-geist-sans)]">
-      {/* NAVIGATION (Optional) */}
-      <nav className="w-full px-6 py-3 flex items-center justify-center gap-6 text-sm">
-        {/* Example placeholders – remove or replace as needed */}
-        <p className="cursor-pointer hover:text-gray-300">Home</p>
-        <p className="cursor-pointer hover:text-gray-300">About</p>
-        <p className="cursor-pointer hover:text-gray-300">Help</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
+      {/* NAVIGATION */}
+      <nav className="w-full px-6 py-4 flex items-center justify-center gap-6 text-sm bg-black/20 backdrop-blur-md shadow-md">
+        <p className="cursor-pointer hover:text-yellow-300 transition">Home</p>
+        <p className="cursor-pointer hover:text-yellow-300 transition">About</p>
+        <p className="cursor-pointer hover:text-yellow-300 transition">Help</p>
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="flex flex-col items-center justify-center p-8 gap-8">
-        {/* Title */}
-        <h1 className="text-3xl font-bold">FinQuest</h1>
-        {/* Short explanation */}
-        <p className="text-center text-gray-300 max-w-xl">
-          Welcome to FinQuest—an interactive journey to sharpen your financial
-          choices! Please fill out your details in-line below.
+      <main className="flex flex-col items-center justify-center px-6 py-12 gap-15">
+        <h1 className="text-5xl font-bold tracking-wide text-yellow-200 drop-shadow-md">
+          🌟 FinQuest
+        </h1>
+        <p className="text-center text-yellow-100 max-w-2xl text-lg">
+          Welcome to FinQuest — an interactive journey to sharpen your financial choices!
         </p>
 
-        {/* Inline Input Section */}
-        <div className="text-gray-200 leading-7 max-w-xl">
-          <p className="mb-4">
+        {/* Glassy Form Card */}
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 w-full max-w-4xl transition-all duration-300 hover:scale-[1.02]">
+          <p className="leading-[3rem] text-white text-lg mb-4">
             Hello, my name is{" "}
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Name"
-              className="inline-block w-36 rounded-md px-2 py-1 text-white"
+              className="input-field w-36"
             />
             , I am{" "}
             <input
@@ -50,26 +49,25 @@ export default function Home() {
               value={age}
               onChange={(e) => setAge(e.target.value)}
               placeholder="Age"
-              className="inline-block w-15 rounded-md px-2 py-1 text-white"
-            />
-            {" "}years old, I have ${" "}
+              className="input-field w-20"
+            />{" "}
+            years old, with ${" "}
             <input
               type="number"
               value={savings}
               onChange={(e) => setSavings(e.target.value)}
               placeholder="Savings"
-              className="inline-block w-20 rounded-md px-2 py-1 text-white"
-            />
-            {" "}saved in the bank, and I am{" "}
+              className="input-field w-30"
+            />{" "}
+            saved in the bank, and I am{" "}
             <select
-              title="Select career"
-              className="inline-block w-48 rounded-md px-2 py-1 text-white"
+              className="select-field w-48"
               value={career}
               onChange={(e) => {
                 setCareer(e.target.value);
                 setIsStudent(e.target.value === "Student");
                 setIsUnemployed(e.target.value === "Unemployed");
-                setIncome(e.target.value === "Employed" ? "$100,000" : "$0");
+                setIncome(e.target.value === "Employed" ? "100000" : "0");
               }}
             >
               <option value="">Select</option>
@@ -78,7 +76,7 @@ export default function Home() {
               <option value="Student">Student</option>
               <option value="Unemployed">Unemployed</option>
             </select>
-              {!isStudent && !isUnemployed && (
+            {!isStudent && !isUnemployed && (
               <>
                 {" "}working as a{" "}
                 <input
@@ -86,14 +84,15 @@ export default function Home() {
                   value={job}
                   onChange={(e) => setJob(e.target.value)}
                   placeholder="Software Engineer"
-                  className="inline-block w-24 rounded-md px-2 py-1 text-white"
-                />
-                {" "}with an income of ${" "}
+                  className="input-field w-60"
+                />{" "}
+                with an income of ${" "}
                 <input
                   type="number"
                   value={income}
                   onChange={(e) => setIncome(e.target.value)}
-                  placeholder="50,000"
+                  placeholder="100000"
+                  className="input-field w-28"
                 />
               </>
             )}
@@ -105,7 +104,7 @@ export default function Home() {
                   value={major}
                   onChange={(e) => setMajor(e.target.value)}
                   placeholder="e.g. Finance"
-                  className="inline-block w-24 rounded-md px-2 py-1 text-white"
+                  className="input-field w-40"
                 />
               </>
             )}
@@ -114,24 +113,18 @@ export default function Home() {
               type="text"
               value={hobbies}
               onChange={(e) => setHobbies(e.target.value)}
-              placeholder="Reading, Cooking, etc." 
-              className="inline-block w-32 rounded-md px-2 py-1 text-white"
+              placeholder="Reading, Gaming..."
+              className="input-field w-52"
             />
+            .
           </p>
-          
-          
-          <p>
-            Thank you for providing your information,{" "}
-            <span className="font-bold">
-              {name || "Guest"}
-            </span>
-            ! Stay tuned for your next financial decision.
-          </p>
-
-
         </div>
-      </main>
 
+        {/* Confirmation */}
+        <p className="text-center text-lime-300 text-lg">
+          ✅ Thanks, <span className="font-bold">{name || "Guest"}</span>! You&apos;re ready to begin your financial quest.
+        </p>
+      </main>
     </div>
   );
 }
