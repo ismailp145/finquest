@@ -6,143 +6,132 @@ export default function Home() {
   const [age, setAge] = useState("");
   const [savings, setSavings] = useState("");
   const [career, setCareer] = useState("");
+  const [job, setJob] = useState("");
+  const [isUnemployed, setIsUnemployed] = useState(false);
+  const [income, setIncome] = useState("");
+
   const [major, setMajor] = useState("");
   const [isStudent, setIsStudent] = useState(false);
-
+  const [hobbies, setHobbies] = useState("");
   return (
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">     
-       {/* NAVIGATION (Optional) */}
+    <div className="grid grid-rows-[auto_1fr_auto] min-h-screen bg-[#202020] text-white font-[family-name:var(--font-geist-sans)]">
+      {/* NAVIGATION (Optional) */}
       <nav className="w-full px-6 py-3 flex items-center justify-center gap-6 text-sm">
-        <p className="cursor-pointer hover:text-gray-300">Name</p>
-        <p className="cursor-pointer hover:text-gray-300">Age</p>
-        <p className="cursor-pointer hover:text-gray-300">Income</p>
-        <p className="cursor-pointer hover:text-gray-300">Career</p>
+        {/* Example placeholders – remove or replace as needed */}
+        <p className="cursor-pointer hover:text-gray-300">Home</p>
+        <p className="cursor-pointer hover:text-gray-300">About</p>
+        <p className="cursor-pointer hover:text-gray-300">Help</p>
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="flex flex-col items-center justify-center gap-8 p-8">
+      <main className="flex flex-col items-center justify-center p-8 gap-8">
         {/* Title */}
-        <h1 className="text-3xl font-bold tracking-wide">FinQuest</h1>
-        {/* Short sentence */}
-        <p className="text-center text-gray-300 max-w-md">
-          An interactive journey to sharpen your financial choices!
+        <h1 className="text-3xl font-bold">FinQuest</h1>
+        {/* Short explanation */}
+        <p className="text-center text-gray-300 max-w-xl">
+          Welcome to FinQuest—an interactive journey to sharpen your financial
+          choices! Please fill out your details in-line below.
         </p>
 
-        {/* SINGLE SCENARIO BOX (replaces the fill-in form + scenario) */}
-        <div className="bg-black rounded-lg p-6 w-full max-w-lg">
-          <p className="mb-4 font-semibold text-lg">Your Starting Scenario:</p>
-
-          {/* USER INPUT FIELDS */}
-          <div className="flex flex-col gap-3 mb-6">
-            {/* Name */}
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Name</label>
-              <input
-                type="text"
-                className="w-full rounded-md px-3 py-2 text-gray-800"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            {/* Age */}
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Age</label>
-              <input
-                type="number"
-                className="w-full rounded-md px-3 py-2 text-gray-800"
-                placeholder="e.g. 25"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-              />
-            </div>
-            {/* Savings */}
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">
-                Savings (in $)
-              </label>
-              <input
-                type="number"
-                className="w-full rounded-md px-3 py-2 text-gray-800"
-                placeholder="e.g. 1000"
-                value={savings}
-                onChange={(e) => setSavings(e.target.value)}
-              />
-            </div>
-            {/* Career */}
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Career</label>
-              <select
-                title="Select career"
-                className="w-full rounded-md px-3 py-2 text-gray-800"
-                value={career}
-                onChange={(e) => {
-                  setCareer(e.target.value);
-                  setIsStudent(e.target.value === "Student");
-                }}
-              >
-                <option value="">Select career</option>
-                <option value="Employed">Employed</option>
-                <option value="Self-Employed">Self-Employed</option>
-                <option value="Student">Student</option>
-                <option value="Unemployed">Unemployed</option>
-              </select>
-            </div>
-            {/* Major (Conditional) */}
-            {isStudent && (
-              <div>
-                <label className="block text-sm text-gray-300 mb-1">
-                  Major
-                </label>
+        {/* Inline Input Section */}
+        <div className="text-gray-200 leading-7 max-w-xl">
+          <p className="mb-4">
+            Hello, my name is{" "}
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+              className="inline-block w-36 rounded-md px-2 py-1 text-white"
+            />
+            , I am{" "}
+            <input
+              type="number"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              placeholder="Age"
+              className="inline-block w-15 rounded-md px-2 py-1 text-white"
+            />
+            {" "}years old, I have ${" "}
+            <input
+              type="number"
+              value={savings}
+              onChange={(e) => setSavings(e.target.value)}
+              placeholder="Savings"
+              className="inline-block w-20 rounded-md px-2 py-1 text-white"
+            />
+            {" "}saved in the bank, and I am{" "}
+            <select
+              title="Select career"
+              className="inline-block w-48 rounded-md px-2 py-1 text-white"
+              value={career}
+              onChange={(e) => {
+                setCareer(e.target.value);
+                setIsStudent(e.target.value === "Student");
+                setIsUnemployed(e.target.value === "Unemployed");
+                setIncome(e.target.value === "Employed" ? "$100,000" : "$0");
+              }}
+            >
+              <option value="">Select</option>
+              <option value="Employed">Employed</option>
+              <option value="Self-Employed">Self-Employed</option>
+              <option value="Student">Student</option>
+              <option value="Unemployed">Unemployed</option>
+            </select>
+              {!isStudent && !isUnemployed && (
+              <>
+                {" "}working as a{" "}
                 <input
                   type="text"
-                  className="w-full rounded-md px-3 py-2 text-gray-800"
-                  placeholder="e.g. Finance"
+                  value={job}
+                  onChange={(e) => setJob(e.target.value)}
+                  placeholder="Software Engineer"
+                  className="inline-block w-24 rounded-md px-2 py-1 text-white"
+                />
+                {" "}with an income of ${" "}
+                <input
+                  type="number"
+                  value={income}
+                  onChange={(e) => setIncome(e.target.value)}
+                  placeholder="50,000"
+                />
+              </>
+            )}
+            {isStudent && (
+              <>
+                {" "}majoring in{" "}
+                <input
+                  type="text"
                   value={major}
                   onChange={(e) => setMajor(e.target.value)}
+                  placeholder="e.g. Finance"
+                  className="inline-block w-24 rounded-md px-2 py-1 text-white"
                 />
-              </div>
+              </>
             )}
-          </div>
-
-          {/* SCENARIO TEXT USING USER INPUT */}
-          <p className="mb-6">
-            Hello{" "}
+            {" "}and my hobbies are{" "}
+            <input
+              type="text"
+              value={hobbies}
+              onChange={(e) => setHobbies(e.target.value)}
+              placeholder="Reading, Cooking, etc." 
+              className="inline-block w-32 rounded-md px-2 py-1 text-white"
+            />
+          </p>
+          
+          
+          <p>
+            Thank you for providing your information,{" "}
             <span className="font-bold">
-              {name || "Stranger"}
+              {name || "Guest"}
             </span>
-            , you’re{" "}
-            <span className="font-bold">
-              {age ? `${age} years old` : "___ years old"}
-            </span>
-            . Currently, you have{" "}
-            <span className="font-bold">
-              {savings || "___"}
-            </span>{" "}
-            dollars in your bank account, and you’re{" "}
-            {isStudent ? (
-              <span className="font-bold">
-                a student majoring in {major || "___"}.
-              </span>
-            ) : (
-              <span className="font-bold">
-                {career || "___"}.
-              </span>
-            )}{" "}
-            You’re about to face your first big financial decision—choose wisely!
+            ! Stay tuned for your next financial decision.
           </p>
 
-          {/* TWO CHOICES */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 bg-gray-700 rounded-md p-4 text-center cursor-pointer hover:bg-gray-600 transition-colors">
-              Use your savings on a dream vacation
-            </div>
-            <div className="flex-1 bg-gray-700 rounded-md p-4 text-center cursor-pointer hover:bg-gray-600 transition-colors">
-              Invest in an index fund
-            </div>
-          </div>
+
         </div>
       </main>
+
     </div>
   );
 }
