@@ -61,6 +61,7 @@ export default function Home() {
             />{" "}
             saved in the bank, and I am{" "}
             <select
+              title="Career"
               className="select-field w-48"
               value={career}
               onChange={(e) => {
