@@ -1,103 +1,148 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [savings, setSavings] = useState("");
+  const [career, setCareer] = useState("");
+  const [major, setMajor] = useState("");
+  const [isStudent, setIsStudent] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">     
+       {/* NAVIGATION (Optional) */}
+      <nav className="w-full px-6 py-3 flex items-center justify-center gap-6 text-sm">
+        <p className="cursor-pointer hover:text-gray-300">Name</p>
+        <p className="cursor-pointer hover:text-gray-300">Age</p>
+        <p className="cursor-pointer hover:text-gray-300">Income</p>
+        <p className="cursor-pointer hover:text-gray-300">Career</p>
+      </nav>
+
+      {/* MAIN CONTENT */}
+      <main className="flex flex-col items-center justify-center gap-8 p-8">
+        {/* Title */}
+        <h1 className="text-3xl font-bold tracking-wide">FinQuest</h1>
+        {/* Short sentence */}
+        <p className="text-center text-gray-300 max-w-md">
+          An interactive journey to sharpen your financial choices!
+        </p>
+
+        {/* SINGLE SCENARIO BOX (replaces the fill-in form + scenario) */}
+        <div className="bg-black rounded-lg p-6 w-full max-w-lg">
+          <p className="mb-4 font-semibold text-lg">Your Starting Scenario:</p>
+
+          {/* USER INPUT FIELDS */}
+          <div className="flex flex-col gap-3 mb-6">
+            {/* Name */}
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Name</label>
+              <input
+                type="text"
+                className="w-full rounded-md px-3 py-2 text-gray-800"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            {/* Age */}
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Age</label>
+              <input
+                type="number"
+                className="w-full rounded-md px-3 py-2 text-gray-800"
+                placeholder="e.g. 25"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </div>
+            {/* Savings */}
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">
+                Savings (in $)
+              </label>
+              <input
+                type="number"
+                className="w-full rounded-md px-3 py-2 text-gray-800"
+                placeholder="e.g. 1000"
+                value={savings}
+                onChange={(e) => setSavings(e.target.value)}
+              />
+            </div>
+            {/* Career */}
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Career</label>
+              <select
+                title="Select career"
+                className="w-full rounded-md px-3 py-2 text-gray-800"
+                value={career}
+                onChange={(e) => {
+                  setCareer(e.target.value);
+                  setIsStudent(e.target.value === "Student");
+                }}
+              >
+                <option value="">Select career</option>
+                <option value="Employed">Employed</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Student">Student</option>
+                <option value="Unemployed">Unemployed</option>
+              </select>
+            </div>
+            {/* Major (Conditional) */}
+            {isStudent && (
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">
+                  Major
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-md px-3 py-2 text-gray-800"
+                  placeholder="e.g. Finance"
+                  value={major}
+                  onChange={(e) => setMajor(e.target.value)}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* SCENARIO TEXT USING USER INPUT */}
+          <p className="mb-6">
+            Hello{" "}
+            <span className="font-bold">
+              {name || "Stranger"}
+            </span>
+            , you’re{" "}
+            <span className="font-bold">
+              {age ? `${age} years old` : "___ years old"}
+            </span>
+            . Currently, you have{" "}
+            <span className="font-bold">
+              {savings || "___"}
+            </span>{" "}
+            dollars in your bank account, and you’re{" "}
+            {isStudent ? (
+              <span className="font-bold">
+                a student majoring in {major || "___"}.
+              </span>
+            ) : (
+              <span className="font-bold">
+                {career || "___"}.
+              </span>
+            )}{" "}
+            You’re about to face your first big financial decision—choose wisely!
+          </p>
+
+          {/* TWO CHOICES */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 bg-gray-700 rounded-md p-4 text-center cursor-pointer hover:bg-gray-600 transition-colors">
+              Use your savings on a dream vacation
+            </div>
+            <div className="flex-1 bg-gray-700 rounded-md p-4 text-center cursor-pointer hover:bg-gray-600 transition-colors">
+              Invest in an index fund
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
