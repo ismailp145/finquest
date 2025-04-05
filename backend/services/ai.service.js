@@ -10,7 +10,15 @@ async function runGeminiPrompt(prompt) {
   const response = await result.response;
   const text = response.text();
 
-  return text;
+  try {
+    // Remove code block formatting if it exists (e.g., ```json)
+    const clean = text.replace(/```json|```/g, '').trim();
+    const json =await JSON.parse(clean);
+    //console.log('✅ Parsed JSON:', json);
+    return json;
+  } catch (err) {
+    return {"summary":text}; // Return the raw text if JSON parsing fails
+  }
 }
 
 module.exports = {
