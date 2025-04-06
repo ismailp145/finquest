@@ -156,10 +156,10 @@ export default function Home() {
               ✅ Thanks, <span className="font-bold">{name || "Guest"}</span>! You&apos;re ready to begin your financial quest.
             </p>
             <button
-              onClick={() => handleInitialSubmit}
+              onClick={handleInitialSubmit}
               className="mt-6 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
             >
-              Submit to Backend
+              Submit & Start Quest
             </button>
           </>
         )}
