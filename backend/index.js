@@ -3,6 +3,7 @@ const express = require('express');
 const userRoutes = require('./routers/userRoutes');
 const aiRoutes = require('./routers/aiRoutes');
 const decisionRoutes = require('./routers/decisionRoutes');
+const authRoutes = require('./routers/authRoutes'); // new auth routes
 const cors = require('cors');
 
 require('dotenv').config();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/decisions', decisionRoutes);
+app.use('/api/auth', authRoutes); // new auth routes
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

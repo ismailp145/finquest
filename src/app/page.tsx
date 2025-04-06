@@ -33,9 +33,11 @@ export default function Home() {
   const [parentId, setParentId] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
 
+  const [userId, setUserId] = useState<string | null>(sessionStorage.getItem("userId") || "USER_ID");
+
   const addDecisionTree = async () => {
     const decisionTree = {
-      userId:"67f1d68a0532f594b700172e",
+      userId: userId,
       title:"Decision Tree",
     };
 
@@ -171,15 +173,25 @@ export default function Home() {
 
     console.log("🎯 Matching Choice:", matched);
   
+    let updatedScore = score; // Initialize updatedScore with the current score
     if (matched) {
-      setScore(prev => prev + (matched.score || 0));
+      updatedScore = score + (matched.score || 0);
+      setScore(updatedScore);
+      // setScore(prev => prev + (matched.score || 0));
       await generateInputSummary(matched);
       await handleInitialSubmit(); // fetch next scenario
-    } else {
+    } else { 
       console.warn("❌ No matching choice found.");
       console.log("Submitted:", choice.label);
       console.log("Available:", choices.map(c => c.label));
     }
+
+    console.log("Score:", score);
+    await fetch(`${apiUrl}/users/score/${userId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ score: Math.floor(updatedScore*100) }),
+    });
 
     setShowPopup(true);
 

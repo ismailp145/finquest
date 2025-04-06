@@ -22,6 +22,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  score: number;
   createdAt: string;
 }
 
@@ -60,28 +61,28 @@ const BinaryTreeNode = ({ node }: { node: TreeNode }) => {
 
 export default function ProfilePage() {
   // Replace "USER_ID" with the actual user's ID or fetch from auth context
-  const userId = "67f1d68a0532f594b700172e";
-
+  
   const [user, setUser] = useState<User | null>(null);
   const [decisionTrees, setDecisionTrees] = useState<DecisionTree[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
+    const id = sessionStorage.getItem("userId") || "USER_ID";
+    setUserId(id);
+  }, []);
+
+  useEffect(() => {
+   
+    if (!userId) return; // Exit if userId is not set
+
     async function fetchData() {
       try {
-        // Fetch user details using the new endpoint
-        const userResponse = await fetch(`http://localhost:3001/api/users/67f24d6650e625bba11a726e`);
-        if (!userResponse.ok) {
-          throw new Error("Failed to fetch user details");
-        }
+        const userResponse = await fetch(`http://localhost:3001/api/users/${userId}`);
         const userData: User = await userResponse.json();
         setUser(userData);
-
-        // Fetch decision trees for the user
+  
         const treesResponse = await fetch(`http://localhost:3001/api/decisions/trees/all/${userId}`);
-        if (!treesResponse.ok) {
-          throw new Error("Failed to fetch decision trees");
-        }
         const treesData: DecisionTree[] = await treesResponse.json();
         setDecisionTrees(treesData);
       } catch (error) {
@@ -90,8 +91,12 @@ export default function ProfilePage() {
         setLoading(false);
       }
     }
+  
     fetchData();
   }, [userId]);
+
+  
+  console.log("👤 User object:", user);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
@@ -123,10 +128,11 @@ export default function ProfilePage() {
                   <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
-              <div className="mt-4 sm:mt-0 text-right">
-                {/* Current money is hardcoded here; update as needed */}
-                <p className="font-semibold text-xl">Current Money: $450</p>
-              </div>
+              {typeof user.score === 'number' && (
+                <div className="mt-4 sm:mt-0 text-right">
+                  <p className="font-semibold text-xl">High Score: {user.score}</p>
+                </div>
+              )}
             </div>
           ) : (
             <p>Loading user details...</p>

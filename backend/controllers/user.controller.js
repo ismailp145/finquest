@@ -33,8 +33,22 @@ async function getUserById(req, res) {
   }
 }
 
+async function updateUserScore(req, res) {
+  const { id } = req.params;
+  const { score } = req.body;
+  console.log("id", id);
+  console.log("score", score);
+  try {
+    await userService.updateUserScore(id, score);
+    res.status(200).json({ message: "User score updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update user score" });
+  }
+}
+
 module.exports = {
   getUsers,
   addUser,
   getUserById,
+  updateUserScore,
 };
