@@ -19,7 +19,13 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        sessionStorage.setItem("userId", data.userId);
+        if(sessionStorage.getItem("userId") !== null) {
+            sessionStorage.removeItem("userId");
+            sessionStorage.setItem("userId", data.userId);
+        }
+        else{
+            sessionStorage.setItem("userId", data.userId);
+        }
         setAuth(data.userId, data.token);
         router.push("/");
       } else {

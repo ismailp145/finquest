@@ -1,7 +1,7 @@
 "use client";
 import ChoiceCard from "@/components/ChoiceCard";
 import InputPrompt from "@/components/InputPrompt";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Choice {
   label: string;
@@ -33,8 +33,16 @@ export default function Home() {
   const [parentId, setParentId] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  const [userId, setUserId] = useState<string | null>(sessionStorage.getItem("userId") || "USER_ID");
+  
+  const [userId, setUserId] = useState<string | null>(null);
 
+
+  useEffect(() => {
+    const id = sessionStorage.getItem("userId") || "USER_ID";
+    setUserId(id);
+  }, []);
+
+  
   const addDecisionTree = async () => {
     const decisionTree = {
       userId: userId,
@@ -60,6 +68,7 @@ export default function Home() {
           label: "Start",
           explaination: "Initial Decision",
           score: 0,
+          isChosen: false,
           parentId: null,
         }),
       }); 
@@ -87,20 +96,35 @@ export default function Home() {
 
   const handleCreatingNodes =  async (matched)=>{
    choices.forEach(async (choice) => {
-    const res=await fetch(`${apiUrl}/decisions/nodes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        label: choice.label,
-        explanation: choice.description,
-        score: choice.score || 0,
-        parentId: parentId, // Use the stored parentId here
-      }),
-    });
-    const data = await res.json();
-    const nodeId = data._id;
     if(matched.label === choice.label){
+      const res=await fetch(`${apiUrl}/decisions/nodes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          label: choice.label,
+          explanation: choice.description,
+          score: choice.score || 0,
+          parentId: parentId, // Use the stored parentId here
+          isChosen: true,
+        }),
+      });
+      const data = await res.json();
+      const nodeId = data._id;
       setParentId(nodeId); // Update parentId for the next node creation
+    }
+    else{
+      await fetch(`${apiUrl}/decisions/nodes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          label: choice.label,
+          explanation: choice.description,
+          score: choice.score || 0,
+          parentId: parentId, // Use the stored parentId here
+          isChosen: false,
+        }),
+      });
+      // Update parentId for the next node creation
     }
    }
   );

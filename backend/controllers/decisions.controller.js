@@ -24,9 +24,9 @@ async function getDecisionTrees(req, res) {
 
 
 async function createTreeNode(req, res) {
-    const { label, score, explanation, parentId } = req.body;
+    const { label, score, explanation, parentId, isChosen } = req.body;
     try {
-        const newNode = await decisionService.createTreeNode(label, score, explanation,parentId);
+        const newNode = await decisionService.createTreeNode(label, score, explanation,parentId, isChosen);
         res.status(201).json(newNode);
     } catch (err) {
         res.status(500).json({ error: 'Failed to create tree node' });

@@ -8,6 +8,7 @@ interface TreeNode {
   _id: string;
   label: string;
   score: number;
+  isChosen: boolean;
   explanation: string;
   children: TreeNode[];
 }
@@ -32,7 +33,7 @@ const BinaryTreeNode = ({ node }: { node: TreeNode }) => {
     <div className="flex flex-col items-center">
       <div
         className={`px-4 py-2 border rounded-md text-sm text-center whitespace-pre-wrap ${
-          node.score > 0
+          node.isChosen
             ? 'bg-green-200 border-green-600 font-bold text-black'
             : 'bg-gray-100 border-gray-300 text-black'
         }`}

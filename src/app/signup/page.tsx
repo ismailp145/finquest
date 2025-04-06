@@ -20,6 +20,13 @@ export default function SignupPage() {
       });
       const data = await res.json();
       if (res.ok) {
+        if(sessionStorage.getItem("userId") !== null) {
+            sessionStorage.removeItem("userId");
+            sessionStorage.setItem("userId", data.userId);
+        }
+        else{
+            sessionStorage.setItem("userId", data.userId);
+        }
         setAuth(data.userId, data.token);
         router.push("/");
       } else {

@@ -41,13 +41,14 @@ async function getUserDecisionTreesWithPaths(userId) {
     return treeResults;
   }
 
-async function createTreeNode(label, score, explanation, parentId) {
+async function createTreeNode(label, score, explaination, parentId, isChosen) {
   parentId = parentId || null; // Default to null if not provided
     const newNode = new TreeNode({
-    label,
-    score,
-    explanation,
-    parentId
+    label:label,
+    score:score,
+    explaination:explaination,
+    isChosen: isChosen,
+    parentId: parentId,
   });
   await newNode.save();
   return newNode;
@@ -69,6 +70,7 @@ async function buildTree(parentId) {
       label: parent.label,
       description: parent.description,
       score: parent.score,
+      isChosen: parent.isChosen,
       explanation: parent.explanation,
       children: childTrees.filter(Boolean) // remove any nulls
     };
