@@ -115,6 +115,37 @@ async function getUserDecisionByDecisionTreeId(decisionTreeId) {
     return decision;
 }
 
+async function getAllTreesByUserId(userId) {
+    const decisions = await UserDecisionTree.find({ userId: userId });
+
+if (decisions.length === 0) {
+  throw new Error('No decision trees found for this user');
+}
+
+let allTrees = [];
+
+for (const decision of decisions) {
+  const userDecision = await getUserDecisionByDecisionTreeId(decision._id);
+  if (!userDecision) {
+    throw new Error('No user decision found for this decision tree');
+  }
+
+  const tree = await getTreeAndNodes(userDecision.rootId);
+  if (!tree) {
+    throw new Error('No tree found for this root ID');
+  }
+
+  allTrees.push({
+    treeId: decision._id,
+    title: decision.title,
+    tree
+  });
+}
+
+return allTrees;
+
+}
+
 module.exports = {
     createDecisionTree,
     getUserDecisionTreesWithPaths,
@@ -122,5 +153,6 @@ module.exports = {
     getTreeAndNodes,
     createUserDecision,
     getDecisionTreeFromUserId,
-    getUserDecisionByDecisionTreeId
+    getUserDecisionByDecisionTreeId,
+    getAllTreesByUserId,
 };

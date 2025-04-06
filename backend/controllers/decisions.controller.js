@@ -78,6 +78,16 @@ async function getUserDecisionByDecisionTreeId(req, res) {
     }
 }
 
+async function getAllTreesByUserId(req, res) {
+    const userId = req.params.userId;
+    try {
+        const trees = await decisionService.getAllTreesByUserId(userId);
+        res.json(trees);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to get decision trees' });
+    }
+}
+
 module.exports = {
     addDecisionTree,
     getDecisionTrees,
@@ -85,5 +95,6 @@ module.exports = {
     getTree,
     createUserDecision,
     getDecisionTreeFromUserId,
-    getUserDecisionByDecisionTreeId
+    getUserDecisionByDecisionTreeId,
+    getAllTreesByUserId
 };
