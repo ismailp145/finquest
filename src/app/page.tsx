@@ -32,6 +32,10 @@ export default function SignupPage() {
     }
   };
 
+  function openHome(){
+    router.push("/home")
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col items-center justify-center">
       <h1 className="text-5xl font-bold tracking-wide text-yellow-200 drop-shadow-md mb-4">🌟 FinQuest</h1>
@@ -58,7 +62,7 @@ export default function SignupPage() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 rounded mb-4"
         />
-        <button type="submit" className="w-full py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition">
+        <button onClick={openHome} className="w-full py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition">
           Sign Up
         </button>
       </form>
