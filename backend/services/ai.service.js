@@ -17,7 +17,7 @@ async function runGeminiPrompt(prompt) {
     console.log("✅ Parsed JSON:", json);
     return json;
   } catch (err) {
-    console.log("❌ Error in JSON parsing:", err);
+    //console.log("❌ Error in JSON parsing:", err);
     return { summary: text }; // Return the raw text if JSON parsing fails
   }
 }
