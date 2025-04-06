@@ -79,6 +79,8 @@ export default function Home() {
         setCount(count + 1);
         setChoices(data.choices[0].label);
         setChoices2(data.choices[1].label);
+        setDescription1(data.choices[0].description);
+        setDescription2(data.choices[1].description);
         setIsFirstTime(false);
       } catch (error) {
         console.error("Error in fetch:", error);
@@ -86,6 +88,7 @@ export default function Home() {
     } else {
       // Choice selection submission
       try {
+        console.log("Submitting choice:", choice);
         const response = await fetch("http://localhost:8080/api/ai/gemini/decision", {
           method: "POST",
           headers: {
@@ -117,6 +120,26 @@ export default function Home() {
     handleSubmit();
   };
  
+  // TODO send choice to backend to three differnt endpoints 
+  const handleChoiceClick = async (choice: string) => {
+      try {
+        const response = await fetch("http://localhost:8080/api/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ choice }), 
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error submitting choice:", error);
+      }
+  };
+
+
   return (
 
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
