@@ -11,6 +11,7 @@ FinQuest is an interactive, choose-your-own-adventure game designed to teach fin
 - [How We Built It](#how-we-built-it)
 - [Technologies Used](#technologies-used)
 - [Challenges We Ran Into](#challenges-we-ran-into)
+- [Screenshots](##Screenshots)
 - [Accomplishments That We're Proud Of](#accomplishments-that-were-proud-of)
 - [What We Learned](#what-we-learned)
 - [What's Next for FinQuest](#whats-next-for-finquest)
@@ -96,6 +97,16 @@ FinQuest was born from the need to make financial literacy engaging and practica
   The decision tree visualization provides users with clear feedback on how their financial choices affect their future, enhancing the learning experience.
 
 ---
+
+## Screenshots
+![Image](https://github.com/user-attachments/assets/67b34ef9-9cf2-49d4-9701-0326e9b16185)
+![Image](https://github.com/user-attachments/assets/8b171144-200d-4a4c-91db-67e7593559cc)
+![Image](https://github.com/user-attachments/assets/e8f3bb5d-c53d-4192-aaf3-2d7a5f87236a)
+![Image](https://github.com/user-attachments/assets/2eb0efd8-04c5-4be7-93c4-68111848dcba)
+![Image](https://github.com/user-attachments/assets/f02e8e4e-d2fc-4691-95bb-e58b00a92909)
+![Image](https://github.com/user-attachments/assets/8648139e-e6b5-4293-9b30-75191a0354b7)
+![Image](https://github.com/user-attachments/assets/d913b7be-ca1c-43b3-bcc2-6c384468888f)
+![Image](https://github.com/user-attachments/assets/f04eaf02-2664-492d-9259-844d75d8bf47)
 
 ## What We Learned
 
