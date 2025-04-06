@@ -1,5 +1,6 @@
 const userService = require("../services/user.service");
 
+console.log("✅ userController hit 1");
 async function getUsers(req, res) {
   console.log("before GET /users");
   try {

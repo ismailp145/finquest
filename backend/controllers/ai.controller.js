@@ -1,7 +1,7 @@
 const aiService = require("../services/ai.service");
-
+console.log("✅ aiController hit ");
 async function generateDecisions(req, res) {
-  console.log("Received POST /decision", req.body);
+  console.log("✅ generateDecisions hit with body:", req.body);
   try {
     const {
       name,
