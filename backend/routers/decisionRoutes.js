@@ -21,6 +21,7 @@ router.get('/userDecision/:decisionTreeId', decisionController.getUserDecisionBy
 // reading trees and nodes by passing root id of the tree
 router.get('/trees/:rootId', decisionController.getTree)
 
+// get all decision trees of a user
 router.get('/trees/all/:userId', decisionController.getAllTreesByUserId);
 
 // I don't know why I created this!
