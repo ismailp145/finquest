@@ -3,7 +3,7 @@ const aiService = require('../services/ai.service');
 
 async function generateDecisions(req, res){
   try {
-    const { name, age, occupation, goals, currentMoney, hobbies, previousSummary } = req.body;
+    const { name, age, job, income, occupation, goals, currentMoney, hobbies, previousSummary } = req.body;
 
     const prompt=`
     Player Information:
@@ -14,6 +14,8 @@ async function generateDecisions(req, res){
     Goals: ${goals}
     Current Money: ${currentMoney}
     Hobbies: ${hobbies}
+    income: ${income}
+    job: ${job}
     
     Previous Rounds Summary: ${previousSummary? previousSummary : 'No previous summary available.'}
     
@@ -56,7 +58,7 @@ async function generateDecisions(req, res){
 }
 
 async function generateSummary(req, res) {
-    const { name, age, occupation, goals, currentMoney, hobbies, decisions } = req.body;
+    const { name, age, job, income, occupation, goals, currentMoney, hobbies, decisions } = req.body;
 
     const decisionSummary = decisions.map((decision) => {
         return `Decision: ${decision.label}, Description: ${decision.description}, Score: ${decision.score}, Explanation: ${decision.explanation}`;
@@ -71,6 +73,9 @@ async function generateSummary(req, res) {
     Goals: ${goals}
     Current Money: ${currentMoney}
     Hobbies: ${hobbies}
+    income: ${income}
+    job: ${job}
+    
     
     Decisions: ${decisionSummary}
     
