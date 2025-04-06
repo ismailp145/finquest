@@ -3,6 +3,7 @@ const express = require('express');
 const userRoutes = require('./routers/userRoutes');
 const aiRoutes = require('./routers/aiRoutes');
 const decisionRoutes = require('./routers/decisionRoutes');
+const cors = require('cors');
 
 require('dotenv').config();
 
