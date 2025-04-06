@@ -1,4 +1,4 @@
-const userService = require('../services/user.service');
+const userService = require("../services/user.service");
 
 async function getUsers(req, res) {
 
@@ -6,7 +6,7 @@ async function getUsers(req, res) {
     const users = await userService.getAllUsers();
     res.json(users);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to get users' });
+    res.status(500).json({ error: "Failed to get users" });
   }
 }
 
@@ -16,11 +16,11 @@ async function addUser(req, res) {
     const newUser = await userService.createUser(name, email);
     res.status(201).json(newUser);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to add user' });
+    res.status(500).json({ error: "Failed to add user" });
   }
 }
 
 module.exports = {
   getUsers,
-  addUser
+  addUser,
 };

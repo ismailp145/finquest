@@ -17,5 +17,5 @@ async function createUser(name, email) {
 
 module.exports = {
   getAllUsers,
-  createUser
+  createUser,
 };
