@@ -7,4 +7,6 @@ router.post('/', userController.addUser);
 router.get('/:id', userController.getUserById);
 router.put('/score/:id', userController.updateUserScore);
 
+router.get('/user/leaderboard', userController.getLeaderboard);
+
 module.exports = router;

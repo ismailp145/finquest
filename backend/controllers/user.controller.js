@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const userService = require("../services/user.service");
 
 async function getUsers(req, res) {
@@ -46,9 +47,25 @@ async function updateUserScore(req, res) {
   }
 }
 
+async function getLeaderboard(req, res) {
+  try {
+    const users = await User.find().sort({ score: -1 }).limit(10);
+    res.json(users.map(user => ({
+      id: user._id,
+      name: user.name,
+      score: user.score
+    })));
+  } catch (err) {
+    console.error("Error in getLeaderboard:", err);
+    res.status(500).json({ error: "Failed to fetch leaderboard" });
+  }
+}
+
+
 module.exports = {
   getUsers,
   addUser,
   getUserById,
   updateUserScore,
+  getLeaderboard,
 };

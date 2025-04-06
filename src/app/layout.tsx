@@ -1,8 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
 import Link from "next/link";
 import "./globals.css";
+import Header from "./components/header"; // Import our client header
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,16 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white`}
       >
         <AuthProvider>
-          <header className="w-full px-6 py-4 bg-black/20 backdrop-blur-md shadow-md">
-            <nav className="flex justify-center gap-6 text-sm">
-              <Link href="/home" className="hover:text-yellow-300 transition">
-                Home
-              </Link>
-              <Link href="/profile" className="hover:text-yellow-300 transition">
-                Profile
-              </Link>
-            </nav>
-          </header>
+          <Header />
           <main>{children}</main>
         </AuthProvider>
       </body>

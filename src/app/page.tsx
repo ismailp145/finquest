@@ -34,6 +34,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col items-center justify-center">
+      <h1 className="text-5xl font-bold tracking-wide text-yellow-200 drop-shadow-md mb-4">🌟 FinQuest</h1>
       <form onSubmit={handleSignup} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-white mb-4">Sign Up</h1>
         <input

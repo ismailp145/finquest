@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,7 +36,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col items-center justify-center">
+      <h1 className="text-5xl font-bold tracking-wide text-yellow-200 drop-shadow-md mb-4">🌟 FinQuest</h1>
       <form onSubmit={handleLogin} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-white mb-4">Login</h1>
         <input
@@ -56,6 +58,12 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+      <p className="mt-4 text-white">
+        Don't have an account?{" "}
+        <Link href="/" className="text-yellow-500 hover:underline">
+          Sign Up
+        </Link>
+      </p>
     </div>
   );
 }
