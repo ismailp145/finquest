@@ -1,11 +1,19 @@
+const aiService = require("../services/ai.service");
 
-const aiService = require('../services/ai.service');
-
-async function generateDecisions(req, res){
+async function generateDecisions(req, res) {
+  console.log("Received POST /decision", req.body);
   try {
-    const { name, age, occupation, goals, currentMoney, hobbies, previousSummary } = req.body;
+    const {
+      name,
+      age,
+      occupation,
+      goals,
+      currentMoney,
+      hobbies,
+      previousSummary,
+    } = req.body;
 
-    const prompt=`
+    const prompt = `
     Player Information:
     
     Name: ${name}
@@ -15,7 +23,9 @@ async function generateDecisions(req, res){
     Current Money: ${currentMoney}
     Hobbies: ${hobbies}
     
-    Previous Rounds Summary: ${previousSummary? previousSummary : 'No previous summary available.'}
+    Previous Rounds Summary: ${
+      previousSummary ? previousSummary : "No previous summary available."
+    }
     
     Instructions:
     You are an AI scenario generator for a financial literacy choose-your-own-adventure game. Based on the player's information and the outcomes of previous rounds, generate a new scenario where the player faces a fresh financial decision. The scenario should be concise (1-3 sentences) and tailored to the player's context.
@@ -44,25 +54,28 @@ async function generateDecisions(req, res){
           "explanation": "Explanation for option 2."
         }
       ]
-    `
-    
+    `;
+    console.log(prompt);
     const result = await aiService.runGeminiPrompt(prompt);
-   // console.log(result);
-   res.status(200).send(result);
-} catch (err) {
+    console.log(result);
+    res.status(200).send(result);
+  } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to generate response' });
+    res.status(500).json({ error: "Failed to generate response" });
   }
 }
 
 async function generateSummary(req, res) {
-    const { name, age, occupation, goals, currentMoney, hobbies, decisions } = req.body;
+  const { name, age, occupation, goals, currentMoney, hobbies, decisions } =
+    req.body;
 
-    const decisionSummary = decisions.map((decision) => {
-        return `Decision: ${decision.label}, Description: ${decision.description}, Score: ${decision.score}, Explanation: ${decision.explanation}`;
-    }).join('\n');
+  const decisionSummary = decisions
+    .map((decision) => {
+      return `Decision: ${decision.label}, Description: ${decision.description}, Score: ${decision.score}, Explanation: ${decision.explanation}`;
+    })
+    .join("\n");
 
-    const prompt =`
+  const prompt = `
     Player Information:
     
     Name: ${name}
@@ -79,12 +92,12 @@ async function generateSummary(req, res) {
     - A brief overview of the player's situation and decisions.
     - A summary of the impact of each decision on the player's finances.
     - Any additional advice or insights for the player.
-    `
-    const result = await aiService.runGeminiPrompt(prompt);
-    res.status(200).send(result);
+    `;
+  const result = await aiService.runGeminiPrompt(prompt);
+  res.status(200).send(result);
 }
 
 module.exports = {
-    generateDecisions,
-    generateSummary
+  generateDecisions,
+  generateSummary,
 };

@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const aiController = require('../controllers/ai.controller');
+const aiController = require("../controllers/ai.controller");
 
-router.post('/gemini/decision', aiController.generateDecisions);
-router.post('/gemini/summary', aiController.generateSummary);
+router.post("/gemini/decision", aiController.generateDecisions);
+router.post("/gemini/summary", aiController.generateSummary);
 
 module.exports = router;

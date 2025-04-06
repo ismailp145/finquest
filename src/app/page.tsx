@@ -13,7 +13,68 @@ export default function Home() {
   const [major, setMajor] = useState("");
   const [isStudent, setIsStudent] = useState(false);
   const [hobbies, setHobbies] = useState("");
+  const [inputSummary, setInputSummary] = useState("");
 
+  // Function to generate the input summary string (for display purposes only)
+  const generateInputSummary = () => {
+    let summary = `Name: ${name}, Age: ${age}, Savings: $${savings}, Career: ${career}`;
+    
+    if (!isStudent && !isUnemployed) {
+      summary += `, Job: ${job}, Income: $${income}`;
+    }
+    
+    if (isStudent) {
+      summary += `, Major: ${major}`;
+    }
+    
+    summary += `, Hobbies: ${hobbies}`;
+    
+    setInputSummary(summary);
+    return summary;
+  };
+
+  // Function to handle form submission
+  const handleSubmit = () => {
+    // Generate summary for display purposes
+    generateInputSummary();
+    
+    // Create a JSON object with all form data
+    const formData = {
+      name,
+      age: parseInt(age) || 0,
+      // career,
+      job: !isStudent && !isUnemployed ? job : "",
+      savings: parseFloat(savings) || 0,
+      // income: !isStudent && !isUnemployed ? parseFloat(income) || 0 : 0,
+      // isStudent,
+      // isUnemployed,
+      // major: isStudent ? major : "",
+      hobbies,
+      previousSummary: inputSummary,
+    };
+   
+    console.log("Submitting to backend:", formData);
+    
+    // Send the JSON object to the backend
+    fetch("http://localhost:8080/api/gemini/decision", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData), 
+    })
+
+
+    .then(response => response.json())
+    .then(data => {
+      console.log("Success:", data);
+      // Handle the response data here
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  };
+ 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
       {/* NAVIGATION */}
@@ -125,6 +186,22 @@ export default function Home() {
         <p className="text-center text-lime-300 text-lg">
           ✅ Thanks, <span className="font-bold">{name || "Guest"}</span>! You&apos;re ready to begin your financial quest.
         </p>
+        
+        {/* Submit Button */}
+        <button 
+          onClick={handleSubmit}
+          className="mt-6 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
+        >
+          Submit to Backend
+        </button>
+        
+        {/* Display the summary (for testing) */}
+        {inputSummary && (
+          <div className="mt-6 p-4 bg-black/30 rounded-lg max-w-2xl w-full">
+            <h3 className="text-yellow-200 font-bold mb-2">Input Summary:</h3>
+            <p className="text-sm break-words">{inputSummary}</p>
+          </div>
+        )}
       </main>
     </div>
   );
