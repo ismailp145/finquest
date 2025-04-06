@@ -1,4 +1,5 @@
 "use client";
+import ChoiceCard from "@/components/ChoiceCard";
 import InputPrompt from "@/components/InputPrompt";
 import { useState } from "react";
 
@@ -18,8 +19,10 @@ export default function Home() {
   const [outputSummary, setOutputSummary] = useState("");
   const [isFirstTime, setIsFirstTime] = useState(true);
   const [count, setCount] = useState(0);
-  const [choices, setChoices] = useState([]);
-  const [choices2, setChoices2] = useState([]);
+  const [choices, setChoices] = useState("");
+  const [choices2, setChoices2] = useState("");
+  const [description1, setDescription1] = useState("");
+  const [description2, setDescription2] = useState("");
 
 
   // Function to generate the input summary string (for display purposes only)
@@ -41,58 +44,77 @@ export default function Home() {
   };
 
   // Function to handle form submission
-  const handleSubmit = () => {
-
-    // Generate summary for display purposes
-    generateInputSummary();
-    
-    // Create a JSON object with all form data
-    const formData = {
-      name,
-      age: parseInt(age) || 0,
-      // career,
-      job: !isStudent && !isUnemployed ? job : "",
-      savings: parseFloat(savings) || 0,
-      // income: !isStudent && !isUnemployed ? parseFloat(income) || 0 : 0,
-      // isStudent,
-      // isUnemployed,
-      // major: isStudent ? major : "",
-      hobbies,
-      previousSummary: inputSummary,
-    };
-   
-    console.log("Submitting to backend:", formData);
-    
-    // Send the JSON object to the backend
-    fetch("http://localhost:8080/api/ai/gemini/decision", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData), 
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  const handleSubmit = async (choice?: string) => {
+    if (!choice) {
+      // Initial form submission
+      generateInputSummary();
+      
+      const formData = {
+        name,
+        age: parseInt(age) || 0,
+        job: !isStudent && !isUnemployed ? job : "",
+        savings: parseFloat(savings) || 0,
+        hobbies,
+        previousSummary: inputSummary,
+      };
+     
+      console.log("Submitting to backend:", formData);
+      
+      try {
+        const response = await fetch("http://localhost:8080/api/ai/gemini/decision", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), 
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("Success:", data);
+        setOutputSummary(data.scenario);
+        setCount(count + 1);
+        setChoices(data.choices[0].label);
+        setChoices2(data.choices[1].label);
+        setIsFirstTime(false);
+      } catch (error) {
+        console.error("Error in fetch:", error);
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Success:", data);
-      setOutputSummary(data.scenario);
-      setCount(count + 1);
-      setChoices(data.choices[0].label);
-      setChoices2(data.choices[1].label);
+    } else {
+      // Choice selection submission
+      try {
+        const response = await fetch("http://localhost:8080/api/ai/gemini/decision", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ choice }), 
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("Choice submitted:", data);
+        setOutputSummary(data.scenario);
+        setCount(count + 1);
+        setChoices(data.choices[0].label);
+        setChoices2(data.choices[1].label); 
+        setDescription1(data.choices[0].description);
+        setDescription2(data.choices[1].description);
+      } catch (error) {
+        console.error("Error submitting choice:", error);
+      }
+    }
+  };
 
-      setIsFirstTime(false);
-
-      // Handle the response data here
-    })
-    .catch(error => {
-
-      console.error("Error in fetch:", error);
-    });
-    
+  // Function to handle button click
+  const handleButtonClick = () => {
+    handleSubmit();
   };
  
   return (
@@ -152,11 +174,13 @@ export default function Home() {
         </div>
         {/* Choices */}
         {!isFirstTime && (
-          <div className="">
-            <h3 className="text-yellow-200 font-bold mb-2">Choices</h3>
-            <p className="">{choices}</p>
-            <p className="">{choices2}</p>
-          </div>
+          <ChoiceCard
+            choice={choices}
+            choice2={choices2}
+            description1={description1}
+            description2={description2}
+            onSubmit={handleSubmit}
+          />  
         )}
 
         {/* Confirmation */}
@@ -169,11 +193,11 @@ export default function Home() {
         {/* Submit Button */}
         {isFirstTime && (
           <button 
-            onClick={handleSubmit}
+            onClick={handleButtonClick}
             className="mt-6 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105"
-        >
-          Submit to Backend
-        </button>
+          >
+            Submit to Backend
+          </button>
         )}
         
         {/* Display the summary (for testing) */}
