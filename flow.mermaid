@@ -1,0 +1,47 @@
+flowchart TD
+    User[User] --> FrontEnd[Frontend Application]
+    
+    subgraph Authentication
+        Auth0[Auth0 Service]
+        FrontEnd -- Login/Signup --> Auth0
+        Auth0 -- JWT Token --> FrontEnd
+    end
+    
+    FrontEnd -- API Requests with JWT --> FastAPI[FastAPI Backend]
+    FastAPI -- Validate JWT --> Auth0
+    
+    subgraph Firebase_Services
+        FCM[Firebase Cloud Messaging]
+        FStorage[Firebase Storage]
+        FFunctions[Firebase Cloud Functions]
+        FHosting[Firebase Hosting]
+        FRealtime[Firebase Realtime DB]
+        
+        FrontEnd -- Upload Statements --> FStorage
+        FStorage -- Trigger --> FFunctions
+        FFunctions -- OCR Processing --> FFunctions
+        FFunctions -- Process Results --> FastAPI
+        FCM -- Push Notifications --> FrontEnd
+        FHosting -- Host --> FrontEnd
+    end
+    
+    subgraph Data_Processing
+        FastAPI -- Financial Data --> LangGraph[LangGraph Orchestrator]
+        LangGraph -- Tasks --> LangChain[LangChain Components]
+        LangChain -- Generate/Query --> Gemini[Gemini API]
+        
+        PlaidAPI[Plaid API] -- Webhooks --> FFunctions
+        FFunctions -- Forward Events --> FastAPI
+    end
+    
+    subgraph Data_Storage
+        LangGraph -- Store/Retrieve --> MongoDB[(MongoDB Atlas)]
+        LangChain -- Embed --> VectorDB[(Pinecone/FAISS)]
+        
+        FastAPI -- Real-time Status --> FRealtime
+        FrontEnd -- Subscribe --> FRealtime
+    end
+    
+    subgraph Monitoring
+        LangSmith[LangSmith] -- Track --> LangGraph
+    end
