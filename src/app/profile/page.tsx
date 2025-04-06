@@ -1,103 +1,52 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import React from 'react';
 
-interface DecisionNode {
-  decision: string;
-  chosen: boolean;
-  children?: DecisionNode[];
+// TypeScript interfaces for your API responses
+interface TreeNode {
+  _id: string;
+  label: string;
+  score: number;
+  explanation: string;
+  children: TreeNode[];
 }
 
-interface GameDecisionTree {
-  game: string;
-  tree: DecisionNode;
+interface DecisionTree {
+  treeId: string;
+  title: string;
+  tree: TreeNode;
 }
 
-// Sample data: two games with binary decision trees
-const decisionHistory: GameDecisionTree[] = [
-  {
-    game: "Game 1",
-    tree: {
-      decision: "Invest in College Fund",
-      chosen: true,
-      children: [
-        {
-          decision: "Buy a New Phone",
-          chosen: false,
-        },
-        {
-          decision: "Reinvest in Stocks",
-          chosen: true,
-          children: [
-            {
-              decision: "Sell Some Shares",
-              chosen: false,
-            },
-            {
-              decision: "Hold Position",
-              chosen: true,
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    game: "Game 2",
-    tree: {
-      decision: "Start a Side Hustle",
-      chosen: true,
-      children: [
-        {
-          decision: "Invest in Equipment",
-          chosen: true,
-        },
-        {
-          decision: "Market on Social Media",
-          chosen: true,
-          children: [
-            {
-              decision: "Hire an Influencer",
-              chosen: false,
-            },
-            {
-              decision: "DIY Marketing",
-              chosen: true,
-            },
-          ],
-        },
-      ],
-    },
-  },
-];
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+}
 
-// Recursive component to render a binary tree node
-const BinaryTreeNode = ({ node }: { node: DecisionNode }) => {
+// Recursive component to render a tree node and its children
+const BinaryTreeNode = ({ node }: { node: TreeNode }) => {
   return (
     <div className="flex flex-col items-center">
-      {/* Node */}
       <div
         className={`px-4 py-2 border rounded-md text-sm text-center whitespace-pre-wrap ${
-          node.chosen
+          node.score > 0
             ? 'bg-green-200 border-green-600 font-bold text-black'
             : 'bg-gray-100 border-gray-300 text-black'
         }`}
       >
-        {node.decision}
+        {node.label}
       </div>
-
       {node.children && node.children.length > 0 && (
         <div className="flex flex-col items-center mt-2 relative">
-          {/* Vertical connector from this node to children */}
+          {/* Vertical connector */}
           <div className="w-px h-4 bg-gray-400"></div>
-          {/* Horizontal connector */}
+          {/* Horizontal connector and children */}
           <div className="flex justify-between w-full relative">
-            {/* Draw a horizontal line spanning between the first and last child's center */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full border-t border-gray-400"></div>
-            {node.children.map((child, index) => (
-              <div key={index} className="flex flex-col items-center px-2">
-                {/* Child node connector (a small vertical line from the horizontal line to the child) */}
+            {node.children.map((child) => (
+              <div key={child._id} className="flex flex-col items-center px-2">
                 <div className="w-px h-4 bg-gray-400"></div>
                 <BinaryTreeNode node={child} />
               </div>
@@ -110,54 +59,106 @@ const BinaryTreeNode = ({ node }: { node: DecisionNode }) => {
 };
 
 export default function ProfilePage() {
-  const user = {
-    name: 'Alice',
-    age: 20,
-    goals: 'Save for tuition, invest wisely',
-    hobbies: 'Painting, reading',
-    money: 450,
-    photoUrl: '/images/profilepic.png',
-  };
+  // Replace "USER_ID" with the actual user's ID or fetch from auth context
+  const userId = "67f1d68a0532f594b700172e";
+
+  const [user, setUser] = useState<User | null>(null);
+  const [decisionTrees, setDecisionTrees] = useState<DecisionTree[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch user details using the new endpoint
+        const userResponse = await fetch(`http://localhost:3001/api/users/67f24d6650e625bba11a726e`);
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user details");
+        }
+        const userData: User = await userResponse.json();
+        setUser(userData);
+
+        // Fetch decision trees for the user
+        const treesResponse = await fetch(`http://localhost:3001/api/decisions/trees/all/${userId}`);
+        if (!treesResponse.ok) {
+          throw new Error("Failed to fetch decision trees");
+        }
+        const treesData: DecisionTree[] = await treesResponse.json();
+        setDecisionTrees(treesData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [userId]);
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-r from-green-200 to-blue-300">
-      {/* Profile Card */}
-      <div className="w-full bg-white rounded-lg shadow-lg p-6 mb-6">
-        <div className="flex flex-col sm:flex-row items-center sm:space-x-6">
-          <div className="relative w-32 h-32 mb-4 sm:mb-0">
-            <Image
-              src={user.photoUrl}
-              alt="Profile Picture"
-              fill
-              className="object-cover rounded-full"
-            />
-          </div>
-          <div className="text-black text-center sm:text-left">
-            <h1 className="text-3xl font-bold">{user.name}</h1>
-            <p>Age: {user.age}</p>
-            <p>Goals: {user.goals}</p>
-            <p>Hobbies: {user.hobbies}</p>
-            <p className="font-semibold">Current Money: ${user.money}</p>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
+      {/* Navigation Bar */}
+      <nav className="w-full px-6 py-4 flex items-center justify-center gap-6 text-sm bg-black/20 backdrop-blur-md shadow-md">
+        <p className="cursor-pointer hover:text-yellow-300 transition">Home</p>
+        <p className="cursor-pointer hover:text-yellow-300 transition">About</p>
+        <p className="cursor-pointer hover:text-yellow-300 transition">Help</p>
+      </nav>
 
-      {/* Decision History Card */}
-      <div className="w-full bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4 text-black">Decision History</h2>
-        <div className="space-y-8">
-          {decisionHistory.map((game, index) => (
-            <div key={index}>
-              <h3 className="text-xl font-semibold mb-2 text-black">
-                {game.game}
-              </h3>
-              <div className="flex justify-center overflow-x-auto">
-                <BinaryTreeNode node={game.tree} />
+      {/* Main Content */}
+      <main className="px-6 py-12 space-y-10">
+        {/* Full-width User Details Card */}
+        <div className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
+          {user ? (
+            <div className="flex flex-col sm:flex-row items-center justify-between">
+              <div className="flex items-center space-x-6">
+                <div className="relative w-24 h-24">
+                  <Image
+                    src="/images/profilepic.png"
+                    alt="Profile Picture"
+                    fill
+                    className="object-cover rounded-full"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold">{user.name}</h1>
+                  <p>Email: {user.email}</p>
+                  <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="mt-4 sm:mt-0 text-right">
+                {/* Current money is hardcoded here; update as needed */}
+                <p className="font-semibold text-xl">Current Money: $450</p>
               </div>
             </div>
-          ))}
+          ) : (
+            <p>Loading user details...</p>
+          )}
         </div>
-      </div>
+
+        {/* Decision Trees History Card */}
+        <div className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
+          <h2 className="text-2xl font-bold mb-4">Decision History</h2>
+          {loading ? (
+            <p>Loading decision trees...</p>
+          ) : decisionTrees.length > 0 ? (
+            <div className="space-y-8">
+              {decisionTrees.map((treeObj) => (
+                <div key={treeObj.treeId}>
+                  <h3 className="text-xl font-semibold mb-2">{treeObj.title}</h3>
+                  <div className="flex justify-center overflow-x-auto">
+                    <BinaryTreeNode node={treeObj.tree} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No decision trees found for this user.</p>
+          )}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full px-6 py-4 text-center bg-black/20 backdrop-blur-md shadow-md">
+        <p className="text-sm">© 2025 FinQuest. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
