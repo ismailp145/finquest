@@ -1,6 +1,7 @@
 const userService = require('../services/user.service');
 
 async function getUsers(req, res) {
+
   try {
     const users = await userService.getAllUsers();
     res.json(users);
@@ -10,8 +11,9 @@ async function getUsers(req, res) {
 }
 
 async function addUser(req, res) {
+  const { name, email } = req.body;
   try {
-    const newUser = await userService.createUser(req.body);
+    const newUser = await userService.createUser(name, email);
     res.status(201).json(newUser);
   } catch (err) {
     res.status(500).json({ error: 'Failed to add user' });
