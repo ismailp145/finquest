@@ -101,12 +101,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white font-sans grid grid-rows-[auto_1fr_auto]">
-      {/* Navigation Bar */}
-      <nav className="w-full px-6 py-4 flex items-center justify-center gap-6 text-sm bg-black/20 backdrop-blur-md shadow-md">
-        <p className="cursor-pointer hover:text-yellow-300 transition">Home</p>
-        <p className="cursor-pointer hover:text-yellow-300 transition">About</p>
-        <p className="cursor-pointer hover:text-yellow-300 transition">Help</p>
-      </nav>
+
 
       {/* Main Content */}
       <main className="px-6 py-12 space-y-10">

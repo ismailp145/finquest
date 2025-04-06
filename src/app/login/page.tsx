@@ -19,17 +19,14 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        if(sessionStorage.getItem("userId") !== null) {
-            sessionStorage.removeItem("userId");
-            sessionStorage.setItem("userId", data.userId);
-        }
-        else{
-            sessionStorage.setItem("userId", data.userId);
-        }
+        // Store userId in sessionStorage (optional)
+        sessionStorage.setItem("userId", data.userId);
+        // Set authentication context
         setAuth(data.userId, data.token);
-        router.push("/");
+        // Redirect to the Home page
+        router.push("/home");
       } else {
-        alert("Invalid Credentials")
+        alert("Invalid Credentials");
         console.error("Login failed:", data.error);
       }
     } catch (error) {
@@ -46,14 +43,14 @@ export default function LoginPage() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 rounded mb-4"
+          className="w-full p-2 rounded mb-4 bg-white/20 text-black"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 rounded mb-4"
+          className="w-full p-2 rounded mb-4 bg-white/20 text-black"
         />
         <button type="submit" className="w-full py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-400 transition">
           Login
