@@ -20,7 +20,7 @@ export default function LeaderboardPage() {
         }
         const data: LeaderboardEntry[] = await response.json();
         setLeaderboard(data);
-      } catch (error: any) {
+      } catch (error) {
         console.error("Error fetching leaderboard:", error);
         setError("Failed to fetch leaderboard");
       }

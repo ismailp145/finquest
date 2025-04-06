@@ -4,13 +4,9 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
-import Leaderboard from "../leaderboard/page"; // Adjust path if needed
-import { useEffect, useState } from "react";
-
 export default function Header() {
   const { userId, logout } = useAuth();
   const router = useRouter();
-  const [isLogged,setIsLogged] = useState(true);
 
 //   useEffect(()=>{
 //     const session=sessionStorage.getItem("userId")

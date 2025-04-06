@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
-import Link from "next/link";
 import "./globals.css";
 import Header from "./components/header"; // Import our client header
 
