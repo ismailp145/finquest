@@ -11,7 +11,7 @@ FinQuest is an interactive, choose-your-own-adventure game designed to teach fin
 - [How We Built It](#how-we-built-it)
 - [Technologies Used](#technologies-used)
 - [Challenges We Ran Into](#challenges-we-ran-into)
-- [Screenshots](##Screenshots)
+- [Screenshots](#Screenshots)
 - [Accomplishments That We're Proud Of](#accomplishments-that-were-proud-of)
 - [What We Learned](#what-we-learned)
 - [What's Next for FinQuest](#whats-next-for-finquest)
